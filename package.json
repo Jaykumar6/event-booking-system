@@ -1,0 +1,25 @@
+{
+  "name": "event-booking-system",
+  "version": "1.0.0",
+  "description": "Fresher-friendly Event Booking System API for Cactro assessment",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "worker": "node src/jobs/worker.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test tests/health.test.js",
+    "stress": "node scripts/stress-test.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "bullmq": "^5.58.5",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.1",
+    "resend": "^6.0.0"
+  }
+}
