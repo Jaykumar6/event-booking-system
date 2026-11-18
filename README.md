@@ -1,4 +1,4 @@
-# Event Booking System API
+# Event Booking System
 
 It allows organizers to create events and customers to book tickets.
 
@@ -131,3 +131,44 @@ For organizer testing, use:
 - Booking is checked inside a MongoDB transaction so the ticket count stays correct.
 - Email sending is done in the background using BullMQ and Redis.
 
+
+## Frontend (React + Vite)
+
+The `frontend/` folder is a single-page app ("Admit") that talks to this API.
+
+**Run it locally**
+
+```bash
+# terminal 1 - API (needs MongoDB + Redis from your .env)
+npm run dev
+
+# terminal 2 - worker (sends the emails)
+npm run worker
+
+# terminal 3 - frontend
+cd frontend
+npm install
+npm run dev        # http://localhost:5173
+```
+
+Vite proxies `/api` to `http://localhost:3000`, so the httpOnly login cookie works without any CORS setup.
+Set `VITE_PROXY_TARGET` if your API runs on another port.
+
+**What it includes**
+
+- Public event browsing with search, filters (upcoming / available / past) and sorting
+- Event page with live ticket meter and a quantity-based booking panel
+- Register / login with attendee and organizer roles, session restored from the cookie on refresh
+- Attendee: "My tickets" page
+- Organizer: dashboard with stats, create / edit event, attendee list with CSV export
+- Light and dark themes, responsive down to mobile, skeleton loaders, toasts, empty and error states
+
+**Added to the API for the frontend**
+
+- `GET /api/auth/me` - returns the logged-in user from the cookie (used to restore the session on refresh)
+
+**Deploying (frontend on Vercel, API on Render)**
+
+Browsers will not send a `SameSite=Lax` cookie on cross-site requests, so keep the API same-origin from the browser's point of view:
+edit `frontend/vercel.json`, replace `YOUR-API-NAME` with your Render service name, and deploy the `frontend/` folder.
+Vercel then forwards `/api/*` to Render and the login cookie stays first-party.

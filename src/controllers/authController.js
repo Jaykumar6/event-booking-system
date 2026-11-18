@@ -90,3 +90,25 @@ export function logout(req, res) {
   res.clearCookie("token");
   res.json({ message: "Logged out" });
 }
+
+// Returns the logged-in user from the auth cookie so the frontend can restore a session on refresh.
+export async function me(req, res, next) {
+  try {
+    const user = await User.findById(req.user.userId).select("name email role");
+
+    if (!user) {
+      return res.status(401).json({ message: "Account no longer exists" });
+    }
+
+    res.json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
+  } catch (error) {
+    next(error);
+  }
+}
