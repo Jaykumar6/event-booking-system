@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node src/server.js",
+    "build": "npm --prefix frontend install --include=dev && npm --prefix frontend run build",
     "worker": "node src/jobs/worker.js",
     "dev": "node --watch src/server.js",
     "test": "node --test tests/health.test.js",
